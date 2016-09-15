@@ -1,4 +1,4 @@
-## Connected Dominating Set(CDS) Algorithm
+### Connected Dominating Set(CDS) Algorithm
 
 #Phase one:
 1. All nodes in V(set containing nodes in descending order of degree) are initialized to white color.
