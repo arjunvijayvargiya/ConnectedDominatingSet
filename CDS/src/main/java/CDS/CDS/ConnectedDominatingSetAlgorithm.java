@@ -11,15 +11,21 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.StringTokenizer;
 
+import org.graphstream.graph.Graph;
+import org.graphstream.graph.Node;
+import org.graphstream.graph.implementations.SingleGraph;
+
 public class ConnectedDominatingSetAlgorithm {
    
 	int vertices;
 	int graph[][];
 	PairCDS parr[];
 	char color[];
+	Graph g;
 	public ConnectedDominatingSetAlgorithm(String filename, int vertex) throws IOException {
 		// TODO Auto-generated constructor stub
 		vertices=vertex;
+		g=new SingleGraph("CDSGraph");
 		graph=new int[vertices][vertices];
 		parr=new PairCDS[vertices];
 		for(int i=0;i<vertices;i++)
@@ -27,8 +33,15 @@ public class ConnectedDominatingSetAlgorithm {
 		color=new char[vertices];
 		for(int i=0;i<vertices;i++)
 	           color[i]='w';
+		for(int i=0;i<vertices;i++)
+			g.addNode("" + i);
+		for (Node node : g) {
+	        node.addAttribute("ui.label", node.getId());
+	    }
+		g.addAttribute("ui.stylesheet", "url('file:///E:/ThesisProject/ThesisProject/CDS/src/main/java/CDS/CDS/stylinggraph.css')");
 		File file = new File(filename);
 		filereader(file);
+		g.display();
 	}
 	public void filereader(File fin) throws IOException {
 		FileInputStream fis = new FileInputStream(fin);
@@ -36,6 +49,7 @@ public class ConnectedDominatingSetAlgorithm {
 		//Construct BufferedReader from InputStreamReader
 		BufferedReader br = new BufferedReader(new InputStreamReader(fis));
 		String line = null;
+		int p=0;
 		while ((line = br.readLine()) != null){
 			//System.out.println(line);
 			StringTokenizer st=new StringTokenizer(line);
@@ -49,6 +63,8 @@ public class ConnectedDominatingSetAlgorithm {
 		    int b=Integer.parseInt(starr[1]);
 		    graph[a][b]=1;
 		    graph[b][a]=1;
+		    g.addEdge("" + p,"" + a,"" + b);
+		    p++;
 		}
 		br.close();
 	}
