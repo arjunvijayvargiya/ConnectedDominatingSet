@@ -1,6 +1,6 @@
-# ThesisProject
-Connected Dominating Set(CDS) Algorithm
-Phase one:
+## Connected Dominating Set(CDS) Algorithm
+
+#Phase one:
 1. All nodes in V(set containing nodes in descending order of degree) are initialized to white color.
 2. The first node in V(set containing nodes in descending order of degree) changes its color to black and sends a notification to all its neighbors.
     On receiving this notification, the white neighbours of this node change their colour to
@@ -17,7 +17,7 @@ Phase one:
     least two black neighbors, it is a possible candidate for a Connected Dominating Set and hence should be
     colored yellow.
 
-Phase two:
+#Phase two:
 
 1. Check for yellow nodes in the network, and if present,
     1.1 If the neighbors of the yellow node are not all present in the neighbor set of
