@@ -3,10 +3,28 @@ graph {
 }
 node {
 	size: 30px, 30px;
-	shape: box;
+	shape: circle;
         text-size: 30px;
         text-color: blue;
 	fill-color: red;
+	stroke-mode: plain;
+	stroke-color: yellow;
+}
+node.included {
+	size: 30px, 30px;
+	shape: circle;
+        text-size: 30px;
+        text-color: blue;
+	fill-color: black;
+	stroke-mode: plain;
+	stroke-color: yellow;
+}
+node.waiting {
+	size: 30px, 30px;
+	shape: circle;
+        text-size: 30px;
+        text-color: blue;
+	fill-color: yellow;
 	stroke-mode: plain;
 	stroke-color: yellow;
 }

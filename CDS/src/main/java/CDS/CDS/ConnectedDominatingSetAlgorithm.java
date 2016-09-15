@@ -14,6 +14,8 @@ import java.util.StringTokenizer;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
+import org.graphstream.ui.view.View;
+import org.graphstream.ui.view.Viewer;
 
 public class ConnectedDominatingSetAlgorithm {
    
@@ -41,7 +43,6 @@ public class ConnectedDominatingSetAlgorithm {
 		g.addAttribute("ui.stylesheet", "url('file:///E:/ThesisProject/ThesisProject/CDS/src/main/java/CDS/CDS/stylinggraph.css')");
 		File file = new File(filename);
 		filereader(file);
-		g.display();
 	}
 	public void filereader(File fin) throws IOException {
 		FileInputStream fis = new FileInputStream(fin);
@@ -81,7 +82,7 @@ public class ConnectedDominatingSetAlgorithm {
 	public void printcolor()
     {
     	for(int i=0;i<vertices;i++)
-    	 System.out.print("color["+(i+1)+"]="+color[i]+", ");
+    	 System.out.print("color["+i+"]="+color[i]+", ");
     }
 	public void execute()
 	{
@@ -133,7 +134,6 @@ public class ConnectedDominatingSetAlgorithm {
         				}
         			}
         		}
-        		//printcolor(color);
         		current++;
         	}
         	else if(color[parr[current].index]=='g')
@@ -166,12 +166,10 @@ public class ConnectedDominatingSetAlgorithm {
          			}
         		 }
         		}
-        		//printcolor(color);
         		current++;
         	}
         	else
         	{
-        	  //System.out.println("its black skip!!!");
         	  current++;
         	}
         }      
@@ -187,6 +185,22 @@ public class ConnectedDominatingSetAlgorithm {
         	if(blackcount>=2)
         		color[i]='y';
         }
+        /*
+        for(int i=0;i<vertices;i++)
+        {
+        	if(color[i]=='b')
+        	{
+        		Node n = g.getNode(""+i);
+        	    n.setAttribute("ui.class", "included");
+        	}
+        	if(color[i]=='y')
+        	{
+        		Node n = g.getNode(""+i);
+        	    n.setAttribute("ui.class", "waiting");
+        	}
+        }
+        */
+        //g.display();
 	}
 	public void phaseTwoAlgorithm() {
 		// TODO Auto-generated method stub
@@ -217,10 +231,6 @@ public class ConnectedDominatingSetAlgorithm {
         	    	}
         	    }
         	    if(!iscover)
-        	    {
-        	    	color[i]='b';
-        	    }
-        	    else if(!blackset.contains(new Integer(i)))
         	    {
         	    	color[i]='b';
         	    }
@@ -259,15 +269,25 @@ public class ConnectedDominatingSetAlgorithm {
         	    {
         	    	color[i]='b';
         	    }
-        	    else if(!blackset.contains(new Integer(i)))
-        	    {
-        	    	color[i]='b';
-        	    }
         	    else
         	    {
         	    	color[i]='g';
         	    }
         	}
         }
+        for(int i=0;i<vertices;i++)
+        {
+        	if(color[i]=='b')
+        	{
+        		Node n = g.getNode(""+i);
+        	    n.setAttribute("ui.class", "included");
+        	}
+        	if(color[i]=='y')
+        	{
+        		Node n = g.getNode(""+i);
+        	    n.setAttribute("ui.class", "waiting");
+        	}
+        }
+        g.display();
 	}
 }
