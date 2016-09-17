@@ -27,3 +27,7 @@
     2.1 If the neighbors of the black node are all present in the neighbor set of either/both the
           two black neighbors, the color of the node is changed from black to gray.
 3. Now, all the black nodes in the network form a Connected Dominating Set.
+
+##Result Produced after the run of algorithm on 10 nodes showing the minimum connected dominating set.
+![cdsresult](https://cloud.githubusercontent.com/assets/7685777/18609913/60016990-7d2b-11e6-93ed-1fc28f7ef4b7.PNG)
+
