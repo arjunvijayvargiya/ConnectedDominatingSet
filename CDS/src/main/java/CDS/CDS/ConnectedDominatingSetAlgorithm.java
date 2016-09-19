@@ -24,7 +24,7 @@ public class ConnectedDominatingSetAlgorithm {
 	PairCDS parr[];
 	char color[];
 	Graph g;
-	public ConnectedDominatingSetAlgorithm(String filename, int vertex) throws IOException {
+	public ConnectedDominatingSetAlgorithm(File filename, int vertex) throws IOException {
 		// TODO Auto-generated constructor stub
 		vertices=vertex;
 		g=new SingleGraph("CDSGraph");
@@ -41,8 +41,8 @@ public class ConnectedDominatingSetAlgorithm {
 	        node.addAttribute("ui.label", node.getId());
 	    }
 		g.addAttribute("ui.stylesheet", "url('file:///E:/ThesisProject/ThesisProject/CDS/src/main/java/CDS/CDS/stylinggraph.css')");
-		File file = new File(filename);
-		filereader(file);
+		//File file = new File(filename);
+		filereader(filename);
 	}
 	public void filereader(File fin) throws IOException {
 		FileInputStream fis = new FileInputStream(fin);
@@ -84,11 +84,47 @@ public class ConnectedDominatingSetAlgorithm {
     	for(int i=0;i<vertices;i++)
     	 System.out.print("color["+i+"]="+color[i]+", ");
     }
-	public void execute()
+	public void setColorClass()
+	{
+		for(int i=0;i<vertices;i++)
+        {
+        	if(color[i]=='b')
+        	{
+        		Node n = g.getNode(""+i);
+        	    n.setAttribute("ui.class", "included");
+        	}
+        	else if(color[i]=='y')
+        	{
+        		Node n = g.getNode(""+i);
+        	    n.setAttribute("ui.class", "waiting");
+        	}
+        	else if(color[i]=='g')
+        	{
+        		Node n = g.getNode(""+i);
+        	    n.setAttribute("ui.class", "covered");
+        	}
+        	else
+        	{
+        		Node n = g.getNode(""+i);
+        	    n.setAttribute("ui.class", "started");
+        	}
+        }
+	}
+	public void execute2()
 	{
 		initialize();
 		phaseOneAlgorithm();
 		phaseTwoAlgorithm();
+		setColorClass();
+		g.display();
+		printcolor();
+	}
+	public void execute1()
+	{
+		initialize();
+		phaseOneAlgorithm();
+		setColorClass();
+		g.display();
 		printcolor();
 	}
 	public void initialize() {
@@ -185,22 +221,6 @@ public class ConnectedDominatingSetAlgorithm {
         	if(blackcount>=2)
         		color[i]='y';
         }
-        /*
-        for(int i=0;i<vertices;i++)
-        {
-        	if(color[i]=='b')
-        	{
-        		Node n = g.getNode(""+i);
-        	    n.setAttribute("ui.class", "included");
-        	}
-        	if(color[i]=='y')
-        	{
-        		Node n = g.getNode(""+i);
-        	    n.setAttribute("ui.class", "waiting");
-        	}
-        }
-        */
-        //g.display();
 	}
 	public void phaseTwoAlgorithm() {
 		// TODO Auto-generated method stub
@@ -275,19 +295,5 @@ public class ConnectedDominatingSetAlgorithm {
         	    }
         	}
         }
-        for(int i=0;i<vertices;i++)
-        {
-        	if(color[i]=='b')
-        	{
-        		Node n = g.getNode(""+i);
-        	    n.setAttribute("ui.class", "included");
-        	}
-        	if(color[i]=='y')
-        	{
-        		Node n = g.getNode(""+i);
-        	    n.setAttribute("ui.class", "waiting");
-        	}
-        }
-        g.display();
 	}
 }

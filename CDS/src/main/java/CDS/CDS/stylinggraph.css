@@ -1,7 +1,7 @@
 graph {
 	fill-color: white;
 }
-node {
+node.started {
 	size: 30px, 30px;
 	shape: circle;
         text-size: 30px;
@@ -25,6 +25,15 @@ node.waiting {
         text-size: 30px;
         text-color: blue;
 	fill-color: yellow;
+	stroke-mode: plain;
+	stroke-color: yellow;
+}
+node.covered {
+	size: 30px, 30px;
+	shape: circle;
+        text-size: 30px;
+        text-color: blue;
+	fill-color: grey;
 	stroke-mode: plain;
 	stroke-color: yellow;
 }
