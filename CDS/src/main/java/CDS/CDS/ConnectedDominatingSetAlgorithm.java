@@ -9,6 +9,8 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.PriorityQueue;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 import org.graphstream.graph.Graph;
@@ -23,6 +25,7 @@ public class ConnectedDominatingSetAlgorithm {
 	int graph[][];
 	PairCDS parr[];
 	char color[];
+	PriorityQueue<PairCDS> pq;
 	Graph g;
 	public ConnectedDominatingSetAlgorithm(File filename, int vertex) throws IOException {
 		// TODO Auto-generated constructor stub
@@ -139,6 +142,7 @@ public class ConnectedDominatingSetAlgorithm {
             parr[i].coveringnumber=finddegree(i);
             hm.put(new Integer(parr[i].index),new Integer(parr[i].coveringnumber));
         }
+        /*
        Arrays.sort(parr, new Comparator<PairCDS>() {
             public int compare(PairCDS s1, PairCDS s2) {
                 if(s1.coveringnumber < s2.coveringnumber)
@@ -149,21 +153,35 @@ public class ConnectedDominatingSetAlgorithm {
                 	return -1;
             }
         });
+       */
+        Set<PairCDS> CDSCollection = new HashSet<PairCDS>(Arrays.asList(parr));
+        pq= new PriorityQueue<PairCDS>(new Comparator<PairCDS>() {
+            public int compare(PairCDS s1, PairCDS s2) {
+                if(s1.coveringnumber < s2.coveringnumber)
+                	return 1;
+                else if(s1.coveringnumber == s2.coveringnumber)
+                	return 0;
+                else
+                	return -1;
+            }
+        });
+        pq.addAll(CDSCollection);
 	}
 	public void phaseOneAlgorithm() {
 		// TODO Auto-generated method stub
 		//phase-1 starts
-        int current=0;
+        int current;
         int whites=vertices;
         while(whites!=0)
         {//System.out.println("index selected: " + (parr[current].index+1));
-        	if(color[parr[current].index]=='w') //if its white 
+        	current=pq.poll().index; 
+        	if(color[current]=='w') //if its white 
         	{   //System.out.println("its white and color changed to black");
-        		color[parr[current].index]='b';
+        		color[current]='b';
         		whites--;
         		for(int i=0;i<vertices;i++)
         		{
-        			if(graph[parr[current].index][i]==1)
+        			if(graph[current][i]==1)
         			{
         				if(color[i]=='w')
         				{
@@ -172,14 +190,13 @@ public class ConnectedDominatingSetAlgorithm {
         				}
         			}
         		}
-        		current++;
         	}
-        	else if(color[parr[current].index]=='g')
+        	else if(color[current]=='g')
         	{//System.out.println("its grey");
         		boolean f=false;
         		for(int i=0;i<vertices;i++)
         		{
-        			if(graph[parr[current].index][i]==1)
+        			if(graph[current][i]==1)
         			{
         				if(color[i]=='w')
         				{
@@ -191,10 +208,10 @@ public class ConnectedDominatingSetAlgorithm {
         		if(f)
         		{
         		// System.out.println("and its changed to black");
-        		 color[parr[current].index]='b';
+        		 color[current]='b';
         		 for(int i=0;i<vertices;i++)
         		 {
-        			 if(graph[parr[current].index][i]==1)
+        			 if(graph[current][i]==1)
          			{
          				if(color[i]=='w')
          				{
@@ -204,11 +221,6 @@ public class ConnectedDominatingSetAlgorithm {
          			}
         		 }
         		}
-        		current++;
-        	}
-        	else
-        	{
-        	  current++;
         	}
         }      
         
