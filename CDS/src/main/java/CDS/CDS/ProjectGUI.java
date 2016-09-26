@@ -21,7 +21,7 @@ public class ProjectGUI{
 
 	JFrame jf;
 	JPanel jp;
-	JLabel jl1, jl2, jl3;
+	JLabel jl1, jl2, jl3,error;
 	ConnectedDominatingSetAlgorithm cds;
 	JTextArea jt1;
 	//String filepath="";
@@ -37,6 +37,7 @@ public class ProjectGUI{
 		jl1 = new JLabel("Upload your graph file:"); 
 		jl2 = new JLabel("Enter the number of vertices:");
 		jl3 = new JLabel("Select part of algorithm for CDS:");
+		error = new JLabel("");
 		jt1 = new JTextArea();
 		jr1 = new JRadioButton("Phase1",true);
 		jr1.setActionCommand("Phase1");
@@ -44,6 +45,7 @@ public class ProjectGUI{
 		jr2.setActionCommand("Phase2");
 		jb1 =new JButton("Generate");
 		bg = new ButtonGroup();
+		file=new File("");
 		bg.add(jr1);
 		bg.add(jr2);
 		//settings
@@ -58,47 +60,60 @@ public class ProjectGUI{
 					File selectedFile = fileChooser.getSelectedFile();
 					//System.out.println(selectedFile.getAbsolutePath());
 					file=selectedFile;
-					
+					error.setForeground(Color.BLUE);
+					error.setText("File Upload Successfully");
 				}
 			}
 		});
 		jb1.addActionListener(new ActionListener() {
-			
+
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				 String str = bg.getSelection().getActionCommand();
-			     //System.out.println(str);
-				 String jtext = jt1.getText().toString();
+				if(!file.isFile()){
+				   error.setForeground(Color.RED);
+                   error.setText("Please Upload The Graph File");
+				}
+				else if(jt1.getText().toString().isEmpty()){
+				   error.setForeground(Color.RED);
+                   error.setText("Please Enter Vertices");
+				}
+				else{
+					String str = bg.getSelection().getActionCommand();
+					//System.out.println(str);
+					String jtext = jt1.getText().toString();
 					int vertices=Integer.parseInt(jtext);
-				    try {
+					try {
 						cds = new ConnectedDominatingSetAlgorithm(file,vertices);
-					} catch (IOException e) {
+					} catch (Exception e) {
 						// TODO Auto-generated catch block
-						System.out.println(" file error");
+						//System.out.println(" file error");
+						error.setForeground(Color.RED);
+					    error.setText("File Format Error/ Vertex Error");
 					}
-			     if(str.contentEquals("Phase1"))
-			     {
-			    	 System.out.println("Phase1");
-			    	 try {
+					if(str.contentEquals("Phase1"))
+					{
+						System.out.println("Phase1");
+						try {
 							cds = new ConnectedDominatingSetAlgorithm(file,vertices);
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
 							System.out.println(" file error");
 						}
-			    	cds.execute1();
-			     }
-			     else 
-			     {
-			    	 System.out.println("Phase2");
-			    	 try {
+						cds.execute1();
+					}
+					else 
+					{
+						System.out.println("Phase2");
+						try {
 							cds = new ConnectedDominatingSetAlgorithm(file,vertices);
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
 							System.out.println(" file error");
 						}
-			       cds.execute2();
-			     }
-			}
+						cds.execute2();
+					}
+				}
+			}	
 		});
 		button.setBounds(250, 20, 100, 20);
 		jt1.setBounds(250, 50, 100, 20);
@@ -108,6 +123,7 @@ public class ProjectGUI{
 		jr2.setBounds(400, 80, 70, 20);
 		jl3.setBounds(60, 80, 240, 20);
 		jb1.setBounds(60, 110, 300,40);
+		error.setBounds(400,20,200,40);
 		//jl1.setForeground(Color.WHITE);
 		jp.add(jl1);
 		jp.add(jl2);
@@ -117,8 +133,9 @@ public class ProjectGUI{
 		jp.add(jr1);
 		jp.add(jb1);
 		jp.add(jr2);
+		jp.add(error);
 		jp.setLayout(null);
-	    //jp.setBackground(Color.DARK_GRAY);
+		//jp.setBackground(Color.DARK_GRAY);
 		//jp.setBackground(Color.BLUE);
 
 		//JFrame specs

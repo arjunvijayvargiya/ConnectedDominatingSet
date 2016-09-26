@@ -116,7 +116,8 @@ public class ConnectedDominatingSetAlgorithm {
 		phaseOneAlgorithm();
 		phaseTwoAlgorithm();
 		setColorClass();
-		g.display();
+	    Viewer view=g.display();
+	    view.setCloseFramePolicy(Viewer.CloseFramePolicy.CLOSE_VIEWER);
 		printcolor();
 	}
 	public void execute1()
@@ -124,7 +125,8 @@ public class ConnectedDominatingSetAlgorithm {
 		initialize();
 		phaseOneAlgorithm();
 		setColorClass();
-		g.display();
+		Viewer view=g.display();
+		view.setCloseFramePolicy(Viewer.CloseFramePolicy.CLOSE_VIEWER);
 		printcolor();
 	}
 	public void initialize() {
