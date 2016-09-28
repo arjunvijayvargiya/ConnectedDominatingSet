@@ -26,7 +26,43 @@ public class ConnectedDominatingSetAlgorithm {
 	PairCDS parr[];
 	char color[];
 	PriorityQueue<PairCDS> pq;
+	HashSet<Integer> activeset;
 	Graph g;
+	int p;
+	public Object resizeArray (Object oldArray, int newSize) {
+		   int oldSize = java.lang.reflect.Array.getLength(oldArray);
+		   Class elementType = oldArray.getClass().getComponentType();
+		   Object newArray = java.lang.reflect.Array.newInstance(
+		         elementType, newSize);
+		   int preserveLength = Math.min(oldSize, newSize);
+		   if (preserveLength > 0)
+		      System.arraycopy(oldArray, 0, newArray, 0, preserveLength);
+		   return newArray; 
+    }
+	public void incGraph(){
+		graph = (int[][])Arrays.copyOf(graph,vertices);
+		for (int i=0; i<graph.length; i++) {
+		     if (graph[i] == null)
+		        graph[i] = new int[vertices];
+		     else 
+		    	graph[i] = (int[])Arrays.copyOf(graph[i], vertices); }
+	}
+	public void incColor(){
+		color = Arrays.copyOf(color,vertices);
+		color[vertices-1]='w';
+	}
+	public void incVertices(){
+		vertices++;
+	}
+	public void markEdge(int x){
+		graph[vertices-1][x]=1;
+		g.addEdge(""+p,""+(vertices-1),""+x);
+		p++;
+	}
+	public void updateUIAdd(){
+		Node node=g.addNode(""+(vertices-1));
+		node.addAttribute("ui.label", node.getId());
+	}
 	public ConnectedDominatingSetAlgorithm(File filename, int vertex) throws IOException {
 		// TODO Auto-generated constructor stub
 		vertices=vertex;
@@ -46,6 +82,9 @@ public class ConnectedDominatingSetAlgorithm {
 		g.addAttribute("ui.stylesheet", "url('file:///E:/ThesisProject/ThesisProject/CDS/src/main/java/CDS/CDS/stylinggraph.css')");
 		//File file = new File(filename);
 		filereader(filename);
+		activeset=new HashSet<Integer>();
+		for(int i=0;i<vertices;i++)
+			activeset.add(new Integer(i));
 	}
 	public void filereader(File fin) throws IOException {
 		FileInputStream fis = new FileInputStream(fin);
@@ -53,7 +92,7 @@ public class ConnectedDominatingSetAlgorithm {
 		//Construct BufferedReader from InputStreamReader
 		BufferedReader br = new BufferedReader(new InputStreamReader(fis));
 		String line = null;
-		int p=0;
+		p=0;
 		while ((line = br.readLine()) != null){
 			//System.out.println(line);
 			StringTokenizer st=new StringTokenizer(line);
@@ -134,26 +173,11 @@ public class ConnectedDominatingSetAlgorithm {
 	}
 	public void initialize() {
 		// TODO Auto-generated method stub
-		HashMap<Integer,Integer> hm=new HashMap<Integer, Integer>();
         for(int i=0;i<vertices;i++)
         {
-        	//System.out.println(i);
         	parr[i].index=i;
             parr[i].coveringnumber=finddegree(i);
-            hm.put(new Integer(parr[i].index),new Integer(parr[i].coveringnumber));
         }
-        /*
-       Arrays.sort(parr, new Comparator<PairCDS>() {
-            public int compare(PairCDS s1, PairCDS s2) {
-                if(s1.coveringnumber < s2.coveringnumber)
-                	return 1;
-                else if(s1.coveringnumber == s2.coveringnumber)
-                	return 0;
-                else
-                	return -1;
-            }
-        });
-       */
         Set<PairCDS> CDSCollection = new HashSet<PairCDS>(Arrays.asList(parr));
         pq= new PriorityQueue<PairCDS>(new Comparator<PairCDS>() {
             public int compare(PairCDS s1, PairCDS s2) {
@@ -278,7 +302,7 @@ public class ConnectedDominatingSetAlgorithm {
         {
         	if(color[i]=='b')
         	{
-        	    HashSet<Integer> blackset=new HashSet<Integer>();
+        	    HashSet<Integer> blackset=new HashSet<Integer>(); //constant time
         	    for(int j=0;j<vertices;j++)
         	    {
         	    	if(graph[i][j]==1 && color[j]=='b')
@@ -309,5 +333,31 @@ public class ConnectedDominatingSetAlgorithm {
         	    }
         	}
         }
+	}
+	public void addModifyAlgorithm(){
+		
+		for(int i=0;i<vertices;i++){
+			if(graph[vertices-1][i]==1 && color[i]=='b'){
+				color[vertices-1]='g';
+				setColorClass();
+				g.display();
+				printcolor();
+				return;
+			}
+		}
+		for(int i=0;i<vertices;i++){
+			if(graph[vertices-1][i]==1){
+				for(int j=0;j<vertices;j++){
+					if(graph[i][j]==1 && color[j]=='b'){
+						color[i]='b';
+						color[vertices-1]='g';
+						setColorClass();
+						g.display();
+					    printcolor();
+						return;
+					}
+				}
+			}
+		}
 	}
 }
